@@ -1,0 +1,16 @@
+{
+   "manifest_version": 3,
+   "name": "Fex.Net Assistant",
+   "version": "1.0",
+   "description": "Information Assistant from Fex.Net! Designed by Mironenko media - https://mironenko.top",
+   "icons": {
+       "128": "icon.png"
+   },
+   "content_scripts": [
+       {
+           "matches": [ "https://fex.net/*" ],
+           "js": [ "jquery-3.6.0.min.js", "app.js" ],
+           "css": [ "myStyles.css" ]
+       }
+   ]
+}
