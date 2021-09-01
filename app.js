@@ -9,7 +9,6 @@ jQuery( document ).ready(function($){
 		 $('.fs-table__files-count:contains("КБ")').each(function() {
 		  sumkb += parseFloat($(this).text());
 			});
-			//$('.table-manage-bar__wrapper').prepend(sumkb.toFixed(2) + ' КБ');
 }
 
 if ($('.fs-table__files-count:contains("МБ")').length > 0) {
@@ -18,7 +17,6 @@ if ($('.fs-table__files-count:contains("МБ")').length > 0) {
 		  summb += parseFloat($(this).text());
 			});
 			var mbinkb = summb * 1024;
-			//$('.table-manage-bar__wrapper').prepend(mbinkb.toFixed(2) + ' МБ  ');
 }
 
 if ($('.fs-table__files-count:contains("ГБ")').length > 0) {
@@ -27,23 +25,66 @@ if ($('.fs-table__files-count:contains("ГБ")').length > 0) {
 		  sumgb += parseFloat($(this).text());
 			});
 			var gbinkb = (sumgb * 1024)*1024;
-			//$('.table-manage-bar__wrapper').prepend(sumgb.toFixed(2) + ' ГБ  ');
 }
 
-var sum = (sumkb + mbinkb + gbinkb) / 1024;
 
-var allsumGB = sum / 1024;
+if (gbinkb && mbinkb && sumkb) {
+	var sum =  ((gbinkb + mbinkb + sumkb) / 1024) / 1024;
+	$('.table-filter-menu .size').text('Всего: ' + sum.toFixed(2) + ' ГБ  ');
+	
+} else if ((gbinkb && sumkb) && (gbinkb != mbinkb)) {
+	
+	var sum =  ((gbinkb + sumkb) / 1024) / 1024;
+	$('.table-filter-menu .size').text('Всего: ' + sum.toFixed(2) + ' ГБ  ');
+	
+} else if ((mbinkb && sumkb) && (mbinkb != gbinkb)) {
+	
+	var sum =  (mbinkb + sumkb) / 1024;
+	if (sum > 1024) {
+	var sum =  ((mbinkb + sumkb) / 1024) / 1024;
+	$('.table-filter-menu .size').text('Всего: ' + sum.toFixed(2) + ' ГБ  ');
+	} else {
+		$('.table-filter-menu .size').text('Всего: ' + sum.toFixed(2) + ' МБ  ');
+	}
 
-if (sum => 1000.00) {
+} else if ((gbinkb && mbinkb) && (gbinkb != sumkb)) {
 	
-	$('.table-filter-menu .size').text('Всего: ' + allsumGB.toFixed(2) + ' ГБ  ');
+	var sum =  ((gbinkb + mbinkb) / 1024) / 1024;
+	$('.table-filter-menu .size').text('Всего: ' + sum.toFixed(2) + ' ГБ  ');
 	
-} else {
+} else if (sumkb) {
 	
-	$('.table-filter-menu .size').text(sum.toFixed(2) + ' МБ  ');
+	var sum = sumkb;	
+	if (sum < 1024) {
+		$('.table-filter-menu .size').text('Всего: ' + sum.toFixed(2) + ' КБ  ');
+	} 
+	if (sum > 1024 && sum < 1048576){
+		var sum = sumkb / 1024;
+		$('.table-filter-menu .size').text('Всего: ' + sum.toFixed(2) + ' МБ  ');
+	}
+	if (sum > 1048576) {
+		var sum = (sumkb / 1024) / 1024;
+		$('.table-filter-menu .size').text('Всего: ' + sum.toFixed(2) + ' ГБ  ');
+		}
+		
+} else if (mbinkb) {
 	
-}
+	var sum = (mbinkb) / 1024;
+	if (sum < 1024) {
+	$('.table-filter-menu .size').text('Всего: ' + sum.toFixed(2) + ' МБ  ');
+	}
+	if (sum > 1024) {
+		var sum = ((mbinkb) / 1024) / 1024;
+		$('.table-filter-menu .size').text('Всего: ' + sum.toFixed(2) + ' ГБ  ');
+	}
 
+} else if (gbinkb) {
+	
+	var sum = sumgb;
+	$('.table-filter-menu .size').text('Всего: ' + sum.toFixed(2) + ' ГБ  ');
+	
+} 
+	
 
 }, 5000);
 	
